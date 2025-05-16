@@ -1,0 +1,93 @@
+#Task 01
+
+def __hash_function(self, brand):
+    index = 0
+    for i in brand:
+        index += ord(i)
+    index %= len(self.vehicleTable)
+    # Do not discard the next 3 lines
+    if index in self.empty_slot:
+        del self.empty_slot[index]
+    return index
+
+def insert_vehicle(self, vehicle):
+    reference = vehicleNodes(vehicle[0], vehicle[1], vehicle[2], vehicle[3])
+    index = self.__hash_function(reference.brand)
+    if self.vehicleTable[index] == None:
+        self.vehicleTable[index] = reference
+    elif self.vehicleTable[index].brand == reference.brand:
+        self.vehicleTable[index].next = reference
+    else:
+        self.vehicleTable[self.find_empty_slot()] = reference
+
+
+#Task 02
+
+def __hash_function(self, key):
+    if len(key) % 2 != 0:
+        key += "N"
+    index = 0
+    for i in range(0, len(key), 2):
+        index += int(str(ord(key[i])) + str(ord(key[i+1])))
+    return index % len(self.ht)
+
+def search_hashtable(self, s):
+    index = self.__hash_function(s[0])
+    temp = self.ht[index]
+    while temp != None:
+        if (temp.key, temp.value) == s:
+            return "Found"
+        temp = temp.next
+    return "Not Found"
+
+
+#Task 03
+
+def __hash_function(self, key):
+    i = 0 if len(key) % 2 == 0 else 1
+    sum = 0
+    for j in range(i, len(key), 2):
+        sum += ord(key[j])
+    return sum % self.length
+
+def insert(self, key, value):
+    node = Node((key, value))
+    index = self.__hash_function(key)
+    if self.ht[index].value == None:
+        self.ht[index] = node
+    else:
+        temp = self.ht[index]
+        while temp:
+            if temp.value[1] < value: 
+                node.next = self.ht[index]
+                self.ht[index] = node
+                return None
+            elif temp.value[1] > value:
+                if temp.next == None:
+                    temp.next = node
+                    return None
+                elif temp.next.value[1] > value:
+                    temp = temp.next
+                else:
+                    node.next = temp.next
+                    temp.next = node
+                    return None
+
+
+#Task 04
+
+def __hash_function(self, key):
+    return (key + 3) % len(self.ht)
+
+def remove(self, key):
+    for i in range(len(self.ht)):
+        if self.ht[i] != None:
+            temp = self.ht[i]
+            if key == self.ht[i].key:
+                self.ht[i] = self.ht[i].next
+                return None
+            while temp.next:
+                if temp.next.key == key:
+                    temp.next = temp.next.next
+                    return None
+                temp = temp.next

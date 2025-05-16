@@ -1,0 +1,137 @@
+##############################--TASK 1--##############################
+def LCA(root, x, y):
+    if root == None:
+        return
+    if x > root.elem and y > root.elem:
+        return LCA(root.right, x, y)
+    if x < root.elem and y < root.elem:
+        return LCA(root.left, x, y)
+    return root.elem
+
+
+# DRIVER CODE
+root = BTNode(15)
+node10 = BTNode(10)
+node25 = BTNode(25)
+node8 = BTNode(8)
+node12 = BTNode(12)
+node20 = BTNode(20)
+node30 = BTNode(30)
+node6 = BTNode(6)
+node9 = BTNode(9)
+node18 = BTNode(18)
+node22 = BTNode(22)
+
+root.left = node10
+root.right = node25
+node10.left = node8
+node10.right = node12
+node8.left = node6
+node8.right = node9
+node25.left = node20
+node25.right = node30
+node20.left = node18
+node20.right = node22
+
+print(LCA(root, 6 , 12))
+print(LCA(root, 20, 6))
+print(LCA(root, 18, 22))
+print(LCA(root, 20, 25))
+print(LCA(root, 10, 12))
+
+
+##############################--TASK 2--##############################
+def find_Path(root, key):
+    temp = []
+    def helper(root, key):
+        if root == None:
+            return
+        if root.elem == key:
+            temp.append(root.elem)      
+        elif root.elem > key:
+            temp.append(root.elem)
+            helper(root.left, key)
+        elif root.elem < key:
+            temp.append(root.elem)
+            helper(root.right, key)
+        return temp if key in temp else "No Path Found"
+    return helper(root, key)
+
+
+# DRIVER CODE
+root = BTNode(30)
+node10 = BTNode(10)
+node40 = BTNode(40)
+node3 = BTNode(3)
+node15 = BTNode(15)
+node35 = BTNode(35)
+node55 = BTNode(55)
+
+root.left = node10 
+root.right = node40
+node10.left = node3
+node10.right = node15
+node40.left = node35
+node40.right = node55
+
+print(find_Path(root, 15))
+# This should print [30,10,15]
+
+print(find_Path(root, 50))
+# This should print No Path Found
+
+
+
+##############################--TASK 3--##############################
+def sum_of_leaves(root, sum):
+    sum = BTNode(0)
+
+    def add(root):
+        if root is None:
+            return 0
+        elif root.left is None and root.right is None:
+            sum.elem += root.elem
+        add(root.left)
+        add(root.right)
+    add(root)
+    return sum.elem
+
+
+# DRIVER CODE
+node30 = BTNode(30)
+node10 = BTNode(10)
+node40 = BTNode(40)
+node3 = BTNode(3)
+node15 = BTNode(15)
+node35 = BTNode(35)
+node55 = BTNode(55)
+node2 = BTNode(2)
+node36 = BTNode(36)
+
+node30.left = node10
+node30.right = node40
+node10.left = node3
+node10.right = node15
+node3.left = node2
+node40.left = node35
+node40.right = node55
+node35.right = node36
+
+print(sum_of_leaves(node30, 0))
+
+##############################--TASK 4--##############################
+def inorder_predecessor(root, x):
+    def find_x(root, x):
+        if root == None:
+            return
+        if root.elem == x.elem:
+            return rightmost(root.left)
+        left_result = find_x(root.left, x)
+        if left_result:
+            return left_result
+        return find_x(root.right, x)
+    def rightmost(root):
+        if root.right is None:
+            return root
+        return rightmost(root.right)
+    return find_x(root, x)
